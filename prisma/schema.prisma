@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+}
+
+model About {
+  id        Int      @id @default(autoincrement())
+  fullName  String
+  title     String
+  bio       String   @db.Text
+  photoUrl  String?
+  email     String?
+  phone     String?
+  location  String?
+  updatedAt DateTime @updatedAt
+}
+
+model Education {
+  id          Int      @id @default(autoincrement())
+  institution String
+  degree      String
+  fieldOfStudy String?
+  startDate   DateTime
+  endDate     DateTime?
+  description String?  @db.Text
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+}
+
+model License {
+  id           Int       @id @default(autoincrement())
+  name         String
+  issuer       String
+  issueDate    DateTime
+  expiryDate   DateTime?
+  credentialUrl String?
+  order        Int       @default(0)
+  createdAt    DateTime  @default(now())
+}
+
+model Project {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String   @db.Text
+  imageUrl    String?
+  demoUrl     String?
+  repoUrl     String?
+  techStack   String
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+}
+
+model ContactMessage {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  message   String   @db.Text
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
