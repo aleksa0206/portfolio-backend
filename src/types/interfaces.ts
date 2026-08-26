@@ -1,0 +1,37 @@
+export interface IEducationInput {
+    institution: string;
+    degree: string;
+    fieldOfStudy?: string;
+    startDate: string;
+    endDate?: string;
+    description?: string;
+    order?: number;
+}
+
+export interface IEducationUpdateInput {
+    institution?: string;
+    degree?: string;
+    fieldOfStudy?: string;
+    startDate?: string;
+    endDate?: string;
+    description?: string;
+    order?: number;
+}
+
+export interface ILicenseInput {
+    name: string;
+    issuer: string;
+    issueDate: string;
+    expiryDate?: string;
+    credentialUrl?: string;
+    order?: number;
+}
+
+export interface ILicenseUpdateInput {
+    name?: string;
+    issuer?: string;
+    issueDate?: string;
+    expiryDate?: string;
+    credentialUrl?: string;
+    order?: number;
+}
