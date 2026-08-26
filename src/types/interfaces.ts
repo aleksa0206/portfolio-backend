@@ -35,3 +35,23 @@ export interface ILicenseUpdateInput {
     credentialUrl?: string;
     order?: number;
 }
+
+export interface IProjectInput {
+    title: string;
+    description: string;
+    imageUrl?: string;
+    demoUrl?: string;
+    repoUrl?: string;
+    techStack: string;
+    order?: number;
+}
+
+export interface IProjectUpdateInput {
+    title?: string;
+    description?: string;
+    imageUrl?: string;
+    demoUrl?: string;
+    repoUrl?: string;
+    techStack?: string;
+    order?: number;
+}

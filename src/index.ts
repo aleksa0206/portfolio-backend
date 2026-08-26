@@ -5,6 +5,7 @@ import prisma from './config/db';
 import authRoutes from './routes/authRoutes';
 import educationRoutes from './routes/educationRoutes';
 import licenseRoutes from './routes/licenseRoutes';
+import projectRoutes from './routes/projectRoutes';
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ app.get('/api/test-db', async (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/education', educationRoutes);
 app.use('/api/licenses', licenseRoutes);
+app.use('/api/projects', projectRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server pokrenut na http://localhost:${PORT}`);
