@@ -65,3 +65,9 @@ export interface IAboutInput {
     phone?: string;
     location?: string;
 }
+
+export interface IContactMessageInput {
+    name: string;
+    email: string;
+    message: string;
+}
