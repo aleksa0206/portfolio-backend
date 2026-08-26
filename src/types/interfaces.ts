@@ -55,3 +55,13 @@ export interface IProjectUpdateInput {
     techStack?: string;
     order?: number;
 }
+
+export interface IAboutInput {
+    fullName: string;
+    title: string;
+    bio: string;
+    photoUrl?: string;
+    email?: string;
+    phone?: string;
+    location?: string;
+}

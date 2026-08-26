@@ -6,6 +6,7 @@ import authRoutes from './routes/authRoutes';
 import educationRoutes from './routes/educationRoutes';
 import licenseRoutes from './routes/licenseRoutes';
 import projectRoutes from './routes/projectRoutes';
+import aboutRoutes from './routes/aboutRoutes';
 
 dotenv.config();
 
@@ -32,6 +33,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/education', educationRoutes);
 app.use('/api/licenses', licenseRoutes);
 app.use('/api/projects', projectRoutes);
+app.use('/api/about', aboutRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server pokrenut na http://localhost:${PORT}`);
