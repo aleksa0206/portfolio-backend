@@ -11,6 +11,8 @@ import contactRoutes from "./routes/contactRoutes";
 import { errorHandler } from "./middleware/errorHandler";
 import helmet from "helmet";
 import { httpLogger } from "./middleware/httpLogger";
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./config/swagger";
 
 dotenv.config();
 
@@ -21,6 +23,8 @@ app.use(helmet());
 app.use(httpLogger);
 app.use(cors({ origin: process.env.CLIENT_URL || "http://localhost:4200" }));
 app.use(express.json());
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", message: "Portfolio API radi" });
