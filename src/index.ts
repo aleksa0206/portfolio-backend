@@ -8,6 +8,7 @@ import licenseRoutes from './routes/licenseRoutes';
 import projectRoutes from './routes/projectRoutes';
 import aboutRoutes from './routes/aboutRoutes';
 import contactRoutes from './routes/contactRoutes';
+import { errorHandler } from './middleware/errorHandler';
 
 dotenv.config();
 
@@ -36,6 +37,7 @@ app.use('/api/licenses', licenseRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/about', aboutRoutes);
 app.use('/api/contact', contactRoutes);
+app.use(errorHandler);
 
 app.listen(PORT, () => {
     console.log(`Server pokrenut na http://localhost:${PORT}`);

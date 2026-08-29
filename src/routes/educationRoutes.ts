@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import {
-    getAllEducation,
-    createEducation,
-    updateEducation,
-    deleteEducation,
+  getAllEducation,
+  createEducation,
+  updateEducation,
+  deleteEducation,
 } from '../controllers/educationController';
 import { requireAuth } from '../middleware/auth';
 

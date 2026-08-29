@@ -1,40 +1,35 @@
 import { Request, Response } from 'express';
 import { educationService } from '../services/educationService';
+import { asyncHandler } from '../utils/asyncHandler';
+import { NotFoundError } from '../errors/AppError';
+import { ErrorCode } from '../types/enums';
 
-export async function getAllEducation(req: Request, res: Response) {
-    try {
-        const education = await educationService.getAll();
-        res.json(education);
-    } catch (error) {
-        res.status(500).json({ message: 'Greška pri učitavanju obrazovanja' });
-    }
+async function getAllEducationHandler(req: Request, res: Response) {
+  const education = await educationService.getAll();
+  res.json(education);
 }
 
-export async function createEducation(req: Request, res: Response) {
-    try {
-        const newEducation = await educationService.create(req.body);
-        res.status(201).json(newEducation);
-    } catch (error) {
-        res.status(500).json({ message: 'Greška pri kreiranju obrazovanja' });
-    }
+async function createEducationHandler(req: Request, res: Response) {
+  const newEducation = await educationService.create(req.body);
+  res.status(201).json(newEducation);
 }
 
-export async function updateEducation(req: Request, res: Response) {
-    try {
-        const { id } = req.params;
-        const updated = await educationService.update(Number(id), req.body);
-        res.json(updated);
-    } catch (error) {
-        res.status(500).json({ message: 'Greška pri izmeni obrazovanja' });
-    }
+async function updateEducationHandler(req: Request, res: Response) {
+  const { id } = req.params;
+  const updated = await educationService.update(Number(id), req.body);
+  if (!updated) {
+    throw new NotFoundError(ErrorCode.EDUCATION_UPDATE_FAILED);
+  }
+  res.json(updated);
 }
 
-export async function deleteEducation(req: Request, res: Response) {
-    try {
-        const { id } = req.params;
-        await educationService.remove(Number(id));
-        res.json({ message: 'Obrazovanje obrisano' });
-    } catch (error) {
-        res.status(500).json({ message: 'Greška pri brisanju obrazovanja' });
-    }
+async function deleteEducationHandler(req: Request, res: Response) {
+  const { id } = req.params;
+  await educationService.remove(Number(id));
+  res.json({ message: 'Education record deleted' });
 }
+
+export const getAllEducation = asyncHandler(getAllEducationHandler);
+export const createEducation = asyncHandler(createEducationHandler);
+export const updateEducation = asyncHandler(updateEducationHandler);
+export const deleteEducation = asyncHandler(deleteEducationHandler);

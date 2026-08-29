@@ -1,22 +1,16 @@
 import { Request, Response } from 'express';
 import { aboutService } from '../services/aboutService';
+import { asyncHandler } from '../utils/asyncHandler';
 
-export async function getAbout(req: Request, res: Response) {
-    try {
-        const about = await aboutService.get();
-        res.json(about);
-    } catch (error) {
-        res.status(500).json({
-            message: 'Greška pri učitavanju About sekcije',
-        });
-    }
+async function getAboutHandler(req: Request, res: Response) {
+  const about = await aboutService.get();
+  res.json(about);
 }
 
-export async function saveAbout(req: Request, res: Response) {
-    try {
-        const saved = await aboutService.save(req.body);
-        res.json(saved);
-    } catch (error) {
-        res.status(500).json({ message: 'Greška pri čuvanju About sekcije' });
-    }
+async function saveAboutHandler(req: Request, res: Response) {
+  const saved = await aboutService.save(req.body);
+  res.json(saved);
 }
+
+export const getAbout = asyncHandler(getAboutHandler);
+export const saveAbout = asyncHandler(saveAboutHandler);

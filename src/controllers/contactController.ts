@@ -1,46 +1,38 @@
 import { Request, Response } from 'express';
 import { contactService } from '../services/contactService';
+import { asyncHandler } from '../utils/asyncHandler';
+import { ValidationError } from '../errors/AppError';
+import { ErrorCode } from '../types/enums';
 
-export async function getAllMessages(req: Request, res: Response) {
-    try {
-        const messages = await contactService.getAll();
-        res.json(messages);
-    } catch (error) {
-        res.status(500).json({ message: 'Greška pri učitavanju poruka' });
-    }
+async function getAllMessagesHandler(req: Request, res: Response) {
+  const messages = await contactService.getAll();
+  res.json(messages);
 }
 
-export async function submitMessage(req: Request, res: Response) {
-    try {
-        const { name, email, message } = req.body;
+async function submitMessageHandler(req: Request, res: Response) {
+  const { name, email, message } = req.body;
 
-        if (!name || !email || !message) {
-            return res.status(400).json({ message: 'Sva polja su obavezna' });
-        }
+  if (!name || !email || !message) {
+    throw new ValidationError(ErrorCode.CONTACT_MISSING_FIELDS);
+  }
 
-        const newMessage = await contactService.submit(req.body);
-        res.status(201).json({ message: 'Poruka uspešno poslata', data: newMessage });
-    } catch (error) {
-        res.status(500).json({ message: 'Greška pri slanju poruke' });
-    }
+  const newMessage = await contactService.submit(req.body);
+  res.status(201).json({ message: 'Message sent successfully', data: newMessage });
 }
 
-export async function markMessageAsRead(req: Request, res: Response) {
-    try {
-        const { id } = req.params;
-        const updated = await contactService.markAsRead(Number(id));
-        res.json(updated);
-    } catch (error) {
-        res.status(500).json({ message: 'Greška pri označavanju poruke' });
-    }
+async function markMessageAsReadHandler(req: Request, res: Response) {
+  const { id } = req.params;
+  const updated = await contactService.markAsRead(Number(id));
+  res.json(updated);
 }
 
-export async function deleteMessage(req: Request, res: Response) {
-    try {
-        const { id } = req.params;
-        await contactService.remove(Number(id));
-        res.json({ message: 'Poruka obrisana' });
-    } catch (error) {
-        res.status(500).json({ message: 'Greška pri brisanju poruke' });
-    }
+async function deleteMessageHandler(req: Request, res: Response) {
+  const { id } = req.params;
+  await contactService.remove(Number(id));
+  res.json({ message: 'Message deleted' });
 }
+
+export const getAllMessages = asyncHandler(getAllMessagesHandler);
+export const submitMessage = asyncHandler(submitMessageHandler);
+export const markMessageAsRead = asyncHandler(markMessageAsReadHandler);
+export const deleteMessage = asyncHandler(deleteMessageHandler);

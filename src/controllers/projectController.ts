@@ -1,40 +1,35 @@
 import { Request, Response } from 'express';
 import { projectService } from '../services/projectService';
+import { asyncHandler } from '../utils/asyncHandler';
+import { NotFoundError } from '../errors/AppError';
+import { ErrorCode } from '../types/enums';
 
-export async function getAllProjects(req: Request, res: Response) {
-    try {
-        const projects = await projectService.getAll();
-        res.json(projects);
-    } catch (error) {
-        res.status(500).json({ message: 'Greška pri učitavanju projekata' });
-    }
+async function getAllProjectsHandler(req: Request, res: Response) {
+  const projects = await projectService.getAll();
+  res.json(projects);
 }
 
-export async function createProject(req: Request, res: Response) {
-    try {
-        const newProject = await projectService.create(req.body);
-        res.status(201).json(newProject);
-    } catch (error) {
-        res.status(500).json({ message: 'Greška pri kreiranju projekta' });
-    }
+async function createProjectHandler(req: Request, res: Response) {
+  const newProject = await projectService.create(req.body);
+  res.status(201).json(newProject);
 }
 
-export async function updateProject(req: Request, res: Response) {
-    try {
-        const { id } = req.params;
-        const updated = await projectService.update(Number(id), req.body);
-        res.json(updated);
-    } catch (error) {
-        res.status(500).json({ message: 'Greška pri izmeni projekta' });
-    }
+async function updateProjectHandler(req: Request, res: Response) {
+  const { id } = req.params;
+  const updated = await projectService.update(Number(id), req.body);
+  if (!updated) {
+    throw new NotFoundError(ErrorCode.PROJECT_UPDATE_FAILED);
+  }
+  res.json(updated);
 }
 
-export async function deleteProject(req: Request, res: Response) {
-    try {
-        const { id } = req.params;
-        await projectService.remove(Number(id));
-        res.json({ message: 'Projekat obrisan' });
-    } catch (error) {
-        res.status(500).json({ message: 'Greška pri brisanju projekta' });
-    }
+async function deleteProjectHandler(req: Request, res: Response) {
+  const { id } = req.params;
+  await projectService.remove(Number(id));
+  res.json({ message: 'Project deleted' });
 }
+
+export const getAllProjects = asyncHandler(getAllProjectsHandler);
+export const createProject = asyncHandler(createProjectHandler);
+export const updateProject = asyncHandler(updateProjectHandler);
+export const deleteProject = asyncHandler(deleteProjectHandler);
