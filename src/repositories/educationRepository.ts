@@ -1,26 +1,25 @@
-import prisma from '../config/db';
-import { Prisma } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 
-class EducationRepository {
-    findAll() {
-        return prisma.education.findMany({ orderBy: { order: 'asc' } });
-    }
+export class EducationRepository {
+  constructor(private prisma: PrismaClient) {}
 
-    findById(id: number) {
-        return prisma.education.findUnique({ where: { id } });
-    }
+  findAll() {
+    return this.prisma.education.findMany({ orderBy: { order: 'asc' } });
+  }
 
-    create(data: Prisma.EducationCreateInput) {
-        return prisma.education.create({ data });
-    }
+  findById(id: number) {
+    return this.prisma.education.findUnique({ where: { id } });
+  }
 
-    update(id: number, data: Prisma.EducationUpdateInput) {
-        return prisma.education.update({ where: { id }, data });
-    }
+  create(data: Prisma.EducationCreateInput) {
+    return this.prisma.education.create({ data });
+  }
 
-    remove(id: number) {
-        return prisma.education.delete({ where: { id } });
-    }
+  update(id: number, data: Prisma.EducationUpdateInput) {
+    return this.prisma.education.update({ where: { id }, data });
+  }
+
+  remove(id: number) {
+    return this.prisma.education.delete({ where: { id } });
+  }
 }
-
-export const educationRepository = new EducationRepository();

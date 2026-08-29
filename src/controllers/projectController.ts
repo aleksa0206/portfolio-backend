@@ -1,22 +1,22 @@
-import { Request, Response } from 'express';
-import { projectService } from '../services/projectService';
-import { asyncHandler } from '../utils/asyncHandler';
-import { NotFoundError } from '../errors/AppError';
-import { ErrorCode } from '../types/enums';
+import { Request, Response } from "express";
+import { container } from "../container";
+import { asyncHandler } from "../utils/asyncHandler";
+import { NotFoundError } from "../errors/AppError";
+import { ErrorCode } from "../types/enums";
 
 async function getAllProjectsHandler(req: Request, res: Response) {
-  const projects = await projectService.getAll();
+  const projects = await container.projectService.getAll();
   res.json(projects);
 }
 
 async function createProjectHandler(req: Request, res: Response) {
-  const newProject = await projectService.create(req.body);
+  const newProject = await container.projectService.create(req.body);
   res.status(201).json(newProject);
 }
 
 async function updateProjectHandler(req: Request, res: Response) {
   const { id } = req.params;
-  const updated = await projectService.update(Number(id), req.body);
+  const updated = await container.projectService.update(Number(id), req.body);
   if (!updated) {
     throw new NotFoundError(ErrorCode.PROJECT_UPDATE_FAILED);
   }
@@ -25,8 +25,8 @@ async function updateProjectHandler(req: Request, res: Response) {
 
 async function deleteProjectHandler(req: Request, res: Response) {
   const { id } = req.params;
-  await projectService.remove(Number(id));
-  res.json({ message: 'Project deleted' });
+  await container.projectService.remove(Number(id));
+  res.json({ message: "Project deleted" });
 }
 
 export const getAllProjects = asyncHandler(getAllProjectsHandler);

@@ -1,26 +1,25 @@
-import prisma from '../config/db';
-import { Prisma } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 
-class LicenseRepository {
-    findAll() {
-        return prisma.license.findMany({ orderBy: { order: 'asc' } });
-    }
+export class LicenseRepository {
+  constructor(private prisma: PrismaClient) {}
 
-    findById(id: number) {
-        return prisma.license.findUnique({ where: { id } });
-    }
+  findAll() {
+    return this.prisma.license.findMany({ orderBy: { order: 'asc' } });
+  }
 
-    create(data: Prisma.LicenseCreateInput) {
-        return prisma.license.create({ data });
-    }
+  findById(id: number) {
+    return this.prisma.license.findUnique({ where: { id } });
+  }
 
-    update(id: number, data: Prisma.LicenseUpdateInput) {
-        return prisma.license.update({ where: { id }, data });
-    }
+  create(data: Prisma.LicenseCreateInput) {
+    return this.prisma.license.create({ data });
+  }
 
-    remove(id: number) {
-        return prisma.license.delete({ where: { id } });
-    }
+  update(id: number, data: Prisma.LicenseUpdateInput) {
+    return this.prisma.license.update({ where: { id }, data });
+  }
+
+  remove(id: number) {
+    return this.prisma.license.delete({ where: { id } });
+  }
 }
-
-export const licenseRepository = new LicenseRepository();

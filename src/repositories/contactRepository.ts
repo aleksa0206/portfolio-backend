@@ -1,25 +1,24 @@
-import prisma from '../config/db';
-import { Prisma } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 
-class ContactRepository {
-    findAll() {
-        return prisma.contactMessage.findMany({ orderBy: { createdAt: 'desc' } });
-    }
+export class ContactRepository {
+  constructor(private prisma: PrismaClient) {}
 
-    create(data: Prisma.ContactMessageCreateInput) {
-        return prisma.contactMessage.create({ data });
-    }
+  findAll() {
+    return this.prisma.contactMessage.findMany({ orderBy: { createdAt: 'desc' } });
+  }
 
-    markAsRead(id: number) {
-        return prisma.contactMessage.update({
-            where: { id },
-            data: { isRead: true },
-        });
-    }
+  create(data: Prisma.ContactMessageCreateInput) {
+    return this.prisma.contactMessage.create({ data });
+  }
 
-    remove(id: number) {
-        return prisma.contactMessage.delete({ where: { id } });
-    }
+  markAsRead(id: number) {
+    return this.prisma.contactMessage.update({
+      where: { id },
+      data: { isRead: true },
+    });
+  }
+
+  remove(id: number) {
+    return this.prisma.contactMessage.delete({ where: { id } });
+  }
 }
-
-export const contactRepository = new ContactRepository();

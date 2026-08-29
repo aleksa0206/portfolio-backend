@@ -1,11 +1,11 @@
-import { Request, Response } from 'express';
-import { contactService } from '../services/contactService';
-import { asyncHandler } from '../utils/asyncHandler';
-import { ValidationError } from '../errors/AppError';
-import { ErrorCode } from '../types/enums';
+import { Request, Response } from "express";
+import { container } from "../container";
+import { asyncHandler } from "../utils/asyncHandler";
+import { ValidationError } from "../errors/AppError";
+import { ErrorCode } from "../types/enums";
 
 async function getAllMessagesHandler(req: Request, res: Response) {
-  const messages = await contactService.getAll();
+  const messages = await container.contactService.getAll();
   res.json(messages);
 }
 
@@ -16,20 +16,22 @@ async function submitMessageHandler(req: Request, res: Response) {
     throw new ValidationError(ErrorCode.CONTACT_MISSING_FIELDS);
   }
 
-  const newMessage = await contactService.submit(req.body);
-  res.status(201).json({ message: 'Message sent successfully', data: newMessage });
+  const newMessage = await container.contactService.submit(req.body);
+  res
+    .status(201)
+    .json({ message: "Message sent successfully", data: newMessage });
 }
 
 async function markMessageAsReadHandler(req: Request, res: Response) {
   const { id } = req.params;
-  const updated = await contactService.markAsRead(Number(id));
+  const updated = await container.contactService.markAsRead(Number(id));
   res.json(updated);
 }
 
 async function deleteMessageHandler(req: Request, res: Response) {
   const { id } = req.params;
-  await contactService.remove(Number(id));
-  res.json({ message: 'Message deleted' });
+  await container.contactService.remove(Number(id));
+  res.json({ message: "Message deleted" });
 }
 
 export const getAllMessages = asyncHandler(getAllMessagesHandler);

@@ -1,38 +1,38 @@
-import { projectRepository } from '../repositories/projectRepository';
+import { ProjectRepository } from '../repositories/projectRepository';
 import { IProjectInput, IProjectUpdateInput } from '../types/interfaces';
 
-class ProjectService {
-    getAll() {
-        return projectRepository.findAll();
-    }
+export class ProjectService {
+  constructor(private projectRepository: ProjectRepository) {}
 
-    async create(input: IProjectInput) {
-        return projectRepository.create({
-            title: input.title,
-            description: input.description,
-            imageUrl: input.imageUrl,
-            demoUrl: input.demoUrl,
-            repoUrl: input.repoUrl,
-            techStack: input.techStack,
-            order: input.order ?? 0,
-        });
-    }
+  getAll() {
+    return this.projectRepository.findAll();
+  }
 
-    async update(id: number, input: IProjectUpdateInput) {
-        return projectRepository.update(id, {
-            title: input.title,
-            description: input.description,
-            imageUrl: input.imageUrl,
-            demoUrl: input.demoUrl,
-            repoUrl: input.repoUrl,
-            techStack: input.techStack,
-            order: input.order,
-        });
-    }
+  async create(input: IProjectInput) {
+    return this.projectRepository.create({
+      title: input.title,
+      description: input.description,
+      imageUrl: input.imageUrl,
+      demoUrl: input.demoUrl,
+      repoUrl: input.repoUrl,
+      techStack: input.techStack,
+      order: input.order ?? 0,
+    });
+  }
 
-    remove(id: number) {
-        return projectRepository.remove(id);
-    }
+  async update(id: number, input: IProjectUpdateInput) {
+    return this.projectRepository.update(id, {
+      title: input.title,
+      description: input.description,
+      imageUrl: input.imageUrl,
+      demoUrl: input.demoUrl,
+      repoUrl: input.repoUrl,
+      techStack: input.techStack,
+      order: input.order,
+    });
+  }
+
+  remove(id: number) {
+    return this.projectRepository.remove(id);
+  }
 }
-
-export const projectService = new ProjectService();

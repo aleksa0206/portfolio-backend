@@ -1,26 +1,26 @@
-import { contactRepository } from '../repositories/contactRepository';
+import { ContactRepository } from '../repositories/contactRepository';
 import { IContactMessageInput } from '../types/interfaces';
 
-class ContactService {
-    getAll() {
-        return contactRepository.findAll();
-    }
+export class ContactService {
+  constructor(private contactRepository: ContactRepository) {}
 
-    async submit(input: IContactMessageInput) {
-        return contactRepository.create({
-            name: input.name,
-            email: input.email,
-            message: input.message,
-        });
-    }
+  getAll() {
+    return this.contactRepository.findAll();
+  }
 
-    markAsRead(id: number) {
-        return contactRepository.markAsRead(id);
-    }
+  async submit(input: IContactMessageInput) {
+    return this.contactRepository.create({
+      name: input.name,
+      email: input.email,
+      message: input.message,
+    });
+  }
 
-    remove(id: number) {
-        return contactRepository.remove(id);
-    }
+  markAsRead(id: number) {
+    return this.contactRepository.markAsRead(id);
+  }
+
+  remove(id: number) {
+    return this.contactRepository.remove(id);
+  }
 }
-
-export const contactService = new ContactService();

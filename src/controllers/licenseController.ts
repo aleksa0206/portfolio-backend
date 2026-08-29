@@ -1,22 +1,22 @@
 import { Request, Response } from 'express';
-import { licenseService } from '../services/licenseService';
+import { container } from "../container";
 import { asyncHandler } from '../utils/asyncHandler';
 import { NotFoundError } from '../errors/AppError';
 import { ErrorCode } from '../types/enums';
 
 async function getAllLicensesHandler(req: Request, res: Response) {
-  const licenses = await licenseService.getAll();
+  const licenses = await container.licenseService.getAll();
   res.json(licenses);
 }
 
 async function createLicenseHandler(req: Request, res: Response) {
-  const newLicense = await licenseService.create(req.body);
+  const newLicense = await container.licenseService.create(req.body);
   res.status(201).json(newLicense);
 }
 
 async function updateLicenseHandler(req: Request, res: Response) {
   const { id } = req.params;
-  const updated = await licenseService.update(Number(id), req.body);
+  const updated = await container.licenseService.update(Number(id), req.body);
   if (!updated) {
     throw new NotFoundError(ErrorCode.LICENSE_UPDATE_FAILED);
   }
@@ -25,7 +25,7 @@ async function updateLicenseHandler(req: Request, res: Response) {
 
 async function deleteLicenseHandler(req: Request, res: Response) {
   const { id } = req.params;
-  await licenseService.remove(Number(id));
+  await container.licenseService.remove(Number(id));
   res.json({ message: 'License deleted' });
 }
 

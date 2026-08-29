@@ -1,23 +1,22 @@
-import prisma from '../config/db';
-import { Prisma } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 
-class AboutRepository {
-    find() {
-        return prisma.about.findFirst();
+export class AboutRepository {
+  constructor(private prisma: PrismaClient) {}
+
+  find() {
+    return this.prisma.about.findFirst();
+  }
+
+  async upsert(data: Prisma.AboutCreateInput) {
+    const existing = await this.prisma.about.findFirst();
+
+    if (existing) {
+      return this.prisma.about.update({
+        where: { id: existing.id },
+        data,
+      });
     }
 
-    async upsert(data: Prisma.AboutCreateInput) {
-        const existing = await prisma.about.findFirst();
-
-        if (existing) {
-            return prisma.about.update({
-                where: { id: existing.id },
-                data,
-            });
-        }
-
-        return prisma.about.create({ data });
-    }
+    return this.prisma.about.create({ data });
+  }
 }
-
-export const aboutRepository = new AboutRepository();
