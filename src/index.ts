@@ -9,12 +9,14 @@ import projectRoutes from './routes/projectRoutes';
 import aboutRoutes from './routes/aboutRoutes';
 import contactRoutes from './routes/contactRoutes';
 import { errorHandler } from './middleware/errorHandler';
+import helmet from 'helmet';
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 4000;
 
+app.use(helmet())
 app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:4200' }));
 app.use(express.json());
 
