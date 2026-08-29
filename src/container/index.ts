@@ -9,6 +9,7 @@ import { AboutRepository } from '../repositories/aboutRepository';
 import { AboutService } from '../services/aboutService';
 import { ContactRepository } from '../repositories/contactRepository';
 import { ContactService } from '../services/contactService';
+import { AuthService } from '../services/authService';
 
 class Container {
   private static instance: Container;
@@ -28,6 +29,8 @@ class Container {
   public contactRepository: ContactRepository;
   public contactService: ContactService;
 
+  public authService: AuthService;
+
   private constructor() {
     this.educationRepository = new EducationRepository(prisma);
     this.educationService = new EducationService(this.educationRepository);
@@ -43,6 +46,8 @@ class Container {
 
     this.contactRepository = new ContactRepository(prisma);
     this.contactService = new ContactService(this.contactRepository);
+
+    this.authService = new AuthService(prisma);
   }
 
   public static getInstance(): Container {
