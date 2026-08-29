@@ -51,4 +51,6 @@ export const ErrorMessages: Record<ErrorCode, string> = {
   [ErrorCode.BIO_REQUIRED]: "Bio is required",
   [ErrorCode.CONTACT_NAME_REQUIRED]: "Name is required",
   [ErrorCode.CONTACT_MESSAGE_REQUIRED]: "Message is required",
+
+  [ErrorCode.TOO_MANY_REQUESTS]: "Too many requests, please try again later",
 };
