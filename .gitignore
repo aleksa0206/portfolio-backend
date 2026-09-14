@@ -4,3 +4,7 @@ dist/
 *.log
 
 /src/generated/prisma
+
+CLAUDE.md
+.claude-notes/
+.claude-rules/

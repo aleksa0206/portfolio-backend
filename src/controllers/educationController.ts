@@ -1,8 +1,6 @@
 import { Request, Response } from 'express';
 import { container } from '../container';
 import { asyncHandler } from '../utils/asyncHandler';
-import { NotFoundError } from '../errors/AppError';
-import { ErrorCode } from '../types/enums';
 
 async function getAllEducationHandler(req: Request, res: Response) {
   const education = await container.educationService.getAll();
@@ -17,9 +15,6 @@ async function createEducationHandler(req: Request, res: Response) {
 async function updateEducationHandler(req: Request, res: Response) {
   const { id } = req.params;
   const updated = await container.educationService.update(Number(id), req.body);
-  if (!updated) {
-    throw new NotFoundError(ErrorCode.EDUCATION_UPDATE_FAILED);
-  }
   res.json(updated);
 }
 

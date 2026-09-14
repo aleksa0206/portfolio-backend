@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
 import { container } from "../container";
 import { asyncHandler } from "../utils/asyncHandler";
-import { ValidationError } from "../errors/AppError";
-import { ErrorCode } from "../types/enums";
 
 async function getAllMessagesHandler(req: Request, res: Response) {
   const messages = await container.contactService.getAll();
@@ -10,12 +8,6 @@ async function getAllMessagesHandler(req: Request, res: Response) {
 }
 
 async function submitMessageHandler(req: Request, res: Response) {
-  const { name, email, message } = req.body;
-
-  if (!name || !email || !message) {
-    throw new ValidationError(ErrorCode.CONTACT_MISSING_FIELDS);
-  }
-
   const newMessage = await container.contactService.submit(req.body);
   res
     .status(201)

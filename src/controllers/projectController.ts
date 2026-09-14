@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
 import { container } from "../container";
 import { asyncHandler } from "../utils/asyncHandler";
-import { NotFoundError } from "../errors/AppError";
-import { ErrorCode } from "../types/enums";
 
 async function getAllProjectsHandler(req: Request, res: Response) {
   const projects = await container.projectService.getAll();
@@ -17,9 +15,6 @@ async function createProjectHandler(req: Request, res: Response) {
 async function updateProjectHandler(req: Request, res: Response) {
   const { id } = req.params;
   const updated = await container.projectService.update(Number(id), req.body);
-  if (!updated) {
-    throw new NotFoundError(ErrorCode.PROJECT_UPDATE_FAILED);
-  }
   res.json(updated);
 }
 

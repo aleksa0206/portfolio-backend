@@ -1,8 +1,6 @@
 import { Request, Response } from 'express';
 import { container } from "../container";
 import { asyncHandler } from '../utils/asyncHandler';
-import { NotFoundError } from '../errors/AppError';
-import { ErrorCode } from '../types/enums';
 
 async function getAllLicensesHandler(req: Request, res: Response) {
   const licenses = await container.licenseService.getAll();
@@ -17,9 +15,6 @@ async function createLicenseHandler(req: Request, res: Response) {
 async function updateLicenseHandler(req: Request, res: Response) {
   const { id } = req.params;
   const updated = await container.licenseService.update(Number(id), req.body);
-  if (!updated) {
-    throw new NotFoundError(ErrorCode.LICENSE_UPDATE_FAILED);
-  }
   res.json(updated);
 }
 
